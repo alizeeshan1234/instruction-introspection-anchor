@@ -104,19 +104,17 @@ describe("instruction-introspection-anchor", () => {
   it("Process Transfer Introspection with real SPL transfer", async () => {
   const amount = 100;
 
-  // 1. SPL Token transfer
   const transferIx = createTransferCheckedInstruction(
     fromAccount,
     mint,
     toAccount,
-    provider.wallet.publicKey, // authority
+    provider.wallet.publicKey, 
     amount,
-    6, // decimals
+    6, 
     [],
     TOKEN_PROGRAM_ID
   );
-
-  // 2. Your program introspection instruction
+    
   const programIx = await program.methods
     .processTransferIntrospection(new anchor.BN(amount))
     .accounts({
@@ -132,7 +130,6 @@ describe("instruction-introspection-anchor", () => {
     })
     .instruction();
 
-  // Send both in one transaction
     const tx = new Transaction().add(transferIx, programIx);
     const sig = await provider.sendAndConfirm(tx);
     console.log("Tx:", sig);
